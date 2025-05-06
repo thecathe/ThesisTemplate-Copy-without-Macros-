@@ -1,0 +1,18 @@
+
+\newlist{caseanalysis}{enumerate}{4}
+
+% ! unused
+% % ~ formatting new cases (use immediately after \item)
+% \NewDocumentCommand{\NewCase}{e| o}{\IfValueT{#2}{\IfValueT{#1}{#1~}{#2}:}\hspace{1.5ex}}
+
+% ~ level 1
+\setlist[caseanalysis,1]{label={\itshape{Case~\arabic*.}},ref={\arabic*},topsep=1ex,itemsep=1ex,parsep=0.5ex,leftmargin=5ex,itemindent=4ex,left=0ex,listparindent=4ex}
+
+% ~ level 2
+\setlist[caseanalysis,2]{label={\itshape{\roman*}.},ref={\arabic{caseanalysisi}.\roman*},topsep=0.5ex,itemsep=0.75ex,parsep=0.5ex,leftmargin=4ex,itemindent=0ex,left=-2ex,listparindent=4ex}
+
+% ~ level 3
+\setlist[caseanalysis,3]{label={\itshape{\alph*}.},ref={\arabic{caseanalysisi}.\roman{caseanalysisii}.\alph*},topsep=0.5ex,itemsep=0.75ex,parsep=0.5ex,leftmargin=4ex,itemindent=0ex,left=-2ex,listparindent=4ex}
+
+% ~ level 4
+\setlist[caseanalysis,4]{label={\Roman*.},ref={\arabic{caseanalysisi}.\roman{caseanalysisii}.\alph{caseanalysisiii}.\Roman*},topsep=0.5ex,itemsep=0.75ex,parsep=0.5ex,leftmargin=4ex,itemindent=0ex,left=-2ex,listparindent=4ex}

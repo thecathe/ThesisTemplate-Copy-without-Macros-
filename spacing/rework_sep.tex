@@ -1,0 +1,14 @@
+
+\newlength{\ReworkGapSpacingBefore}
+\newlength{\ReworkGapSpacingAfter}
+
+\setlength{\ReworkGapSpacingBefore}{6ex}
+\setlength{\ReworkGapSpacingAfter}{0.75ex}
+
+%% Adds additional 
+\NewDocumentCommand{\ReworkGap}{s}{%
+    \vspace{\ProofReworkGapSpacingBefore}%
+    {\color{red}{\scriptsize Reworking...}\linebreak\hrule}%
+    \vspace{\ProofReworkGapSpacingAfter}%
+    \IfBooleanT{#1}{\noindent}%
+}

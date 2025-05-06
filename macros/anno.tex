@@ -1,0 +1,92 @@
+
+\IfPackageNotLoaded{soul}{\usepackage{soul}}
+
+%%% highlight references to reviewer feedback
+
+\DeclareRobustCommand{\betterhl}[2][pink]{%
+  \sethlcolor{#1}%
+  \hl{#2}%
+}
+
+\newcommand{\REVISED}[1]{%
+  % \textcolor{black}{\betterhl[lightblue]{#1}}%
+  \textcolor{blue}{#1}%
+}
+
+\newcommand{\CHECK}[1]{%
+  % \textcolor{black}{\betterhl[lightblue]{#1}}%
+  \textcolor{red}{#1}%
+}
+
+\newcommand{\TOREVISE}[2][to revise]{%
+  \textcolor{black}%
+  {\TODO{#1}\betterhl[lightpink]{#2}}%
+}
+
+\makeatletter
+%% save original cite
+\let\Originalcite\textcite
+% \let\Originalcitep\parencite
+% \let\Originalcitet\textcitet
+% \let\Originalhyperlink\hyperlink
+\makeatother
+
+%% used to handle \textcite in \hl (soul package)
+\NewDocumentCommand{\mcite}{o m}{%
+  %% #1 : [] : (optional) informal ref within cite
+  %% #2 : {} : (mandatory) citation
+  \IfValueTF{#1}{\Originalcite[#1]{#2}}{\Originalcite{#2}}%
+}
+
+% \NewDocumentCommand{\mcitep}{o m}{\IfValueTF{#1}{\Originalcitep[#1]{#2}}{\Originalcitep{#2}}}
+
+% \NewDocumentCommand{\mcitet}{o m}{\IfValueTF{#1}{\Originalcitet[#1]{#2}}{\Originalcitet{#2}}}
+
+% \NewDocumentCommand{\mhyperlink}{m m}{\Originalhyperlink[#1]{#2}}
+
+\NewDocumentCommand{\NewHighlight}{s O{lightblue} m o g}{%
+  %% #1 : s* : add to TOC (as note) ?
+  %% #2 : [] : (optional) color to highlight (default: lightblue)
+  %% #3 : {} : (mandatory) name of command
+  %% #4 : [] : (optional) name of note command to use 
+  %% #5 : [] : (optional) name to use if no #4
+  \NewDocumentCommand{#3}{o m}{%
+    %% ##1 : [] : (optional, override) add to TOC
+    %% ##2 : {} : (mandatory) text to highlight
+    %%
+    \makeatletter
+    %%
+    %% first, redefine \textcite
+    \let\textcite\mcite%
+    % \let\parencite\mcitep%
+    % \let\textcitet\mcitet%
+    % \let\hyperlink\mhyperlink%
+    %%
+    %% if (optional, override) ##1
+    \IfValueTF{##1}{%
+      \IfValueTF{#4}{#4{##1}}{\IfValueTF{#5}{\note{\betterhl[#2]{#5}}}{\note{\betterhl[#2]{##1}}}}%
+      % \IfValueTF{#4}{#4{##1}}{\NoteContentsLine{\betterhl[#2]{##1}}}%
+    }{%
+      %% if add to TOC #1
+      \IfBooleanT{#1}{%
+        \IfValueTF{#4}{#4{}}{\IfValueTF{#5}{\note{\betterhl[#2]{#5}}}{\note{\betterhl[#2]{##2}}}}%
+        % \IfValueTF{#4}{\note{\verb|#4|}}{\NoteContentsLine{\betterhl[#2]{##2}}}%
+      }%
+    }%
+    %%
+    %% highlight text
+    \betterhl[#2]{##2}%
+    %% 
+    %% return to original \textcite 
+    \let\textcite\Originalcite%
+    % \let\parencite\Originalcitep%
+    % \let\textcitet\Originalcitet%
+    % \let\hyperlink\Originalhyperlink%
+    %%
+    \makeatother
+    %%
+  }
+}
+
+
+

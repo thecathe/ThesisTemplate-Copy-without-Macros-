@@ -1,0 +1,129 @@
+
+%% from LMCS
+
+
+%%% Theorem environments
+
+% the following environments switch to a slanted font:
+\theoremstyle{plain}
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{slem}[thm]{Sublemma}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{asm}[thm]{Assumption}
+
+% the following environments keep the roman font:
+\theoremstyle{definition}
+
+\newtheorem{rem}[thm]{Remark}
+\newtheorem{rems}[thm]{Remarks}
+\newtheorem{exa}[thm]{Example}
+\newtheorem{exas}[thm]{Examples}
+\newtheorem{defi}[thm]{Definition}
+\newtheorem{conv}[thm]{Convention}
+\newtheorem{conj}[thm]{Conjecture}
+\newtheorem{prob}[thm]{Problem}
+\newtheorem{oprob}[thm]{Open Problem}
+\newtheorem{oprobs}[thm]{Open Problems}
+\newtheorem{algo}[thm]{Algorithm}
+\newtheorem{obs}[thm]{Observation}
+\newtheorem{desc}[thm]{Description}
+\newtheorem{fact}[thm]{Fact}
+\newtheorem{qu}[thm]{Question}
+\newtheorem{oqu}[thm]{Open Question}
+\newtheorem{pty}[thm]{Property}
+\newtheorem{clm}[thm]{Claim}
+\newtheorem{nota}[thm]{Notation}
+\newtheorem{com}[thm]{Comment}
+\newtheorem{coms}[thm]{Comments}
+
+%% goal is to omit parens from note, place cite as part of theorem number
+\newtheoremstyle{defC}%
+  {6pt}% (space above)
+  {6pt}% (space below)
+  {\normalfont}% (body font)
+  {}% (indent amount)
+  {\bfseries}% {theorem head font}
+  {{\bfseries .}}% {punctuation after theorem head}
+  {5pt plus 1pt minus 1pt}% {space after theorem head}
+  {\thmname{#1} \thmnumber{#2} \thmnote{\normalfont#3}}% {theorem head spec}
+\theoremstyle{defC}
+\newtheorem{defiC}[thm]{Definition}
+
+\newtheoremstyle{thmC}%
+  {6pt}% (space above)
+  {6pt}% (space below)
+  {\itshape}% (body font)
+  {}% (indent amount)
+  {\bfseries}% {theorem head font}
+  {{\bfseries .}}% {punctuation after theorem head}
+  {5pt plus 1pt minus 1pt}% {space after theorem head}
+  {\thmname{#1} \thmnumber{#2} \thmnote{\normalfont#3}}% {theorem head spec}
+
+\theoremstyle{thmC}
+\newtheorem{thmC}[thm]{Theorem}
+\newtheorem{propC}[thm]{Proposition}
+\newtheorem{lemC}[thm]{Lemma}
+
+% switch back to standard theorem style for document specific theorems
+\theoremstyle{plain}
+
+\numberwithin{equation}{section}
+
+
+
+% provide given environments so my editor suggests them
+\ProvideDocumentEnvironment{thm}{}{}{}
+\ProvideDocumentEnvironment{lem}{}{}{}
+\ProvideDocumentEnvironment{cor}{}{}{}
+\ProvideDocumentEnvironment{prop}{}{}{}
+\ProvideDocumentEnvironment{asm}{}{}{}
+\ProvideDocumentEnvironment{defi}{}{}{}
+\ProvideDocumentEnvironment{conv}{}{}{}
+\ProvideDocumentEnvironment{conj}{}{}{}
+\ProvideDocumentEnvironment{fact}{}{}{}
+\ProvideDocumentEnvironment{algo}{}{}{}
+\ProvideDocumentEnvironment{pty}{}{}{}
+\ProvideDocumentEnvironment{clm}{}{}{}
+\ProvideDocumentEnvironment{nota}{}{}{}
+\ProvideDocumentEnvironment{exa}{}{}{}
+\ProvideDocumentEnvironment{exas}{}{}{}
+\ProvideDocumentEnvironment{rem}{}{}{}
+\ProvideDocumentEnvironment{rems}{}{}{}
+\ProvideDocumentEnvironment{prob}{}{}{}
+\ProvideDocumentEnvironment{probs}{}{}{}
+\ProvideDocumentEnvironment{oprob}{}{}{}
+\ProvideDocumentEnvironment{oprobs}{}{}{}
+\ProvideDocumentEnvironment{obs}{}{}{}
+\ProvideDocumentEnvironment{obss}{}{}{}
+\ProvideDocumentEnvironment{qu}{}{}{}
+\ProvideDocumentEnvironment{qus}{}{}{}
+
+% necessary changes for LMCS
+\Crefname{thm}{Theorem}{Theorems}
+\Crefname{lem}{Lemma}{Lemmas}
+\Crefname{cor}{Corollary}{Corollaries}
+\Crefname{prop}{Proposition}{Propositions}
+\Crefname{asm}{Assumption}{Assumptions}
+\Crefname{defi}{Definition}{Definitions}
+\Crefname{conv}{Convention}{Conventions}
+\Crefname{conj}{Conjecture}{Conjectures}
+\Crefname{fact}{Fact}{Factos}
+\Crefname{algo}{Algorithm}{Algorithms}
+\Crefname{pty}{Property}{Properties}
+\Crefname{clm}{Claim}{Claims}
+\Crefname{nota}{Notation}{Notations}
+\Crefname{exa}{Example}{Examples}
+\Crefname{exas}{List of Examples}{Lists of Examples}
+\Crefname{rem}{Remark}{Remarks}
+\Crefname{rems}{List of Remarks}{Lists of Remarks}
+\Crefname{prob}{Problem}{Problems}
+\Crefname{probs}{List of Problems}{Lists of Problems}
+\Crefname{oprob}{Open Problem}{Open Problems}
+\Crefname{oprobs}{List of Open Problems}{Lists of Open Problems}
+\Crefname{obs}{Observation}{Obserations}
+\Crefname{obss}{List of Observations}{Lists of Observations}
+\Crefname{qu}{Question}{Questions}
+\Crefname{qus}{List of Questions}{Lists of Questions}

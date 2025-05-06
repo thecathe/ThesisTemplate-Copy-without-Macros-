@@ -1,0 +1,10 @@
+% ~ wraps in math mode if not in math mode
+% https://tex.stackexchange.com/questions/46492/newcommand-how-to-determine-if-in-math-mode-and-then-include
+% #1 : s* : escape math-mode if in math-mode?
+\DeclareDocumentCommand{\WrapMathMode}{s m}{%
+    \relax\ifmmode% in math-mode
+        \IfBooleanTF{#1}{$#2$}{#2}% escape if s*
+    \else% outside math-mode
+        \IfBooleanTF{#1}{#2}{$#2$}% wrap if no s*
+    \fi%
+}

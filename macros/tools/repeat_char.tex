@@ -1,0 +1,11 @@
+% ~ repeat character n times
+% https://tex.stackexchange.com/questions/300207/repeat-characters-n-times
+\makeatletter%
+\newcommand{\RepeatChar}[2]{%
+    \begingroup%
+    \lccode`m=`#2\relax%
+    \lowercase\expandafter{\romannumeral#1000}%%
+    \endgroup%
+    % \negthinspace% to avoid outer ',',' spacing errors? 
+}%
+\makeatother%

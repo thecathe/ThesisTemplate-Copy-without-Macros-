@@ -1,0 +1,32 @@
+
+% for array lines with tall contents
+\newlength{\ArrayLineSpacing}
+\newlength{\ArrayTallLineSpacing}
+\newlength{\ArrayExtraTallLineSpacing}
+
+\setlength{\ArrayLineSpacing}{0.5ex}
+\setlength{\ArrayTallLineSpacing}{0.7ex}
+\setlength{\ArrayExtraTallLineSpacing}{1.1ex}
+
+% array staggered new line wrapping
+\newlength{\ArrayRTLWrapping}
+
+\setlength{\ArrayRTLWrapping}{12ex}
+
+% for LTS line spacing (single transitions, rules, figs)
+\newlength{\ArrayLTSLineSpacing}
+\newlength{\ArrayLTSPremiseLineSpacing}
+\newlength{\ArrayLTSPremiseTallLineSpacing}
+\newlength{\ArrayLTSConclusionLineSpacing}
+\newlength{\ArrayLTSConclusionTallLineSpacing}
+
+\setlength{\ArrayLTSLineSpacing}{0.5ex}
+\setlength{\ArrayLTSPremiseLineSpacing}{0.5ex}
+\setlength{\ArrayLTSPremiseTallLineSpacing}{0.7ex}
+\setlength{\ArrayLTSConclusionLineSpacing}{0.5ex}
+\setlength{\ArrayLTSConclusionTallLineSpacing}{0.7ex}
+
+
+% % 
+% % adds: (for indenting the second line when staggering one line across two)
+\NewDocumentCommand{\ArrWrap}{}{\hspace{\ArrayRTLWrapping}}

@@ -1,0 +1,21 @@
+
+% ! enumitem: https://mirror.apps.cam.ac.uk/pub/tex-archive/macros/latex/contrib/enumitem/enumitem.pdf
+% # for right aligning description labels, requires label width set
+\SetLabelAlign{parright}{\parbox[t]{\labelwidth}{\raggedleft#1}}
+
+% # defaults for enumitem
+\setlist[description]{itemsep=0.5ex,labelsep=2ex,parsep=0ex,listparindent=0ex}%
+
+\setlist[itemize]{topsep=0.5pt,itemsep=-2pt,parsep=4pt}%
+% adjust so that nested itemize dont start too high
+\setlist[itemize,2]{topsep=5pt}%
+
+\setlist[enumerate]{topsep=1pt,itemsep=1.5pt,parsep=4pt}%
+
+%
+%
+%
+% overrides above?
+%
+\setlist[itemize]{leftmargin=4ex,itemsep=1ex}
+\setlist[enumerate]{leftmargin=4ex,itemsep=0.75ex}

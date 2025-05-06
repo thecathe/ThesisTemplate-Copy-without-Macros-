@@ -1,0 +1,22 @@
+
+% wrappers for consistent \vec or \tilde
+
+\ProvideDocumentCommand{\vector}{}{}
+
+% % 
+% % ONLY USE ONE OF THE BELOW
+% % 
+% \let\UseThisVector\vec
+\let\UseThisVector\tilde
+
+
+\NewDocumentCommand{\consistentVector}{m e_ t' G{1}}{\WrapMathMode{%      
+    \IfValueTF{#2}{%
+        {\UseThisVector{#1}}\IfBooleanT{#3}{\RepeatChar{#4}{'}}_{#2}%
+    }{%
+        {\UseThisVector{#1}}\IfBooleanT{#3}{\RepeatChar{#4}{'}}%
+    }%
+}}
+
+\let\Oldvector\vector
+\let\vector\consistentVector

@@ -1,0 +1,104 @@
+
+% ~ rec process call 
+% #1 : s* : list of vars?
+\NewDocumentCommand{\FormatRecVarStyle}{m g}{\WrapMathMode{\IfValueTF{#2}{\mathbf{\uppercase{\scriptstyle #1}}_{{#2}}}{\mathbf{\uppercase{\scriptstyle #1}}}}}
+
+\NewDocumentCommand{\FormatRecCheckStyle}{m g}{\WrapMathMode{\IfValueTF{#2}{\boldsymbol{#1}_{{#2}}}{\boldsymbol{#1}}}}
+
+
+% ~ recursive variable styles
+\NewDocumentCommand{\RecVarStyle}{m}{\WrapMathMode{\CSVListToRecPrc{#1}}}
+\NewDocumentCommand{\RecCheckStyle}{m}{\WrapMathMode{\CSVListToRecCheck{#1}}}
+
+% ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ 
+% ~ xparse list processors 
+% ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+% ~ CSV list separated by line break for array
+\NewDocumentCommand{\CSVListToArrayLines}{>{\SplitList{,}}m}{%
+  \ProcessList{#1}{\HeadCSVListToArrayLines}
+}
+\NewDocumentCommand{\HeadCSVListToArrayLines}{m}{%
+  \rule{0pt}{1.5ex}{#1}%
+  \let\HeadCSVListToArrayLines\TailCSVListToArrayLines%
+}
+\NewDocumentCommand{\TailCSVListToArrayLines}{m}{%
+  ,\\[0.5ex]%
+  \rule{0pt}{1.5ex}{#1}%
+  \let\HeadCSVListToArrayLines\TailCSVListToArrayLines%
+}
+
+% ~ CSV list spaced without commas
+\NewDocumentCommand{\CSVListToSpacedLabels}{>{\SplitList{,}}m}{%
+  \ProcessList{#1}{\HeadCSVListToSpacedLabels}
+}
+\NewDocumentCommand{\HeadCSVListToSpacedLabels}{m}{%
+  \rule{0pt}{1.5ex}{#1}%
+  \let\HeadCSVListToSpacedLabels\TailCSVListToSpacedLabels%
+}
+\NewDocumentCommand{\TailCSVListToSpacedLabels}{m}{%
+~{\rule{0pt}{1.5ex}{#1}}%
+\let\HeadCSVListToSpacedLabels\TailCSVListToSpacedLabels%
+}
+
+% ~ Semicolon-SV list separated ; for recursive process triple
+\NewDocumentCommand{\ScSVListToRecPrc}{>{\SplitList{;}}m}{%
+  \ProcessList{#1}{\HeadScSVListToRecPrc}
+  % \IfValueTF{#2}{%
+  %     \ProcessList{#1}{\HeadScSVListToRecPrc}%
+  % }{%
+  %     \ProcessList{#1}{\HeadScSVListToRecPrc}%
+  % }%
+}
+\NewDocumentCommand{\HeadScSVListToRecPrc}{>{\SplitArgument{1}{:}}m}{%
+  \rule{0pt}{1.5ex}{\FormatRecVarStyle #1 }%
+  \let\HeadScSVListToRecPrc\TailScSVListToRecPrc%
+}
+\NewDocumentCommand{\TailScSVListToRecPrc}{>{\SplitArgument{1}{:}}m}{%
+  ;%
+  \rule{0pt}{1.5ex}{\FormatRecVarStyle #1 }%
+  \let\HeadScSVListToRecPrc\TailScSVListToRecPrc%
+}
+
+% ~ Semicolon-SV list separated ; for recursive definition triple
+\NewDocumentCommand{\ScSVListToRecCheck}{>{\SplitList{;}}m}{%
+  \ProcessList{#1}{\HeadScSVListToRecCheck}
+}
+\NewDocumentCommand{\HeadScSVListToRecCheck}{m}{%
+  \rule{0pt}{1.5ex}{\FormatRecCheckStyle{#1}}%
+  \let\HeadScSVListToRecCheck\TailScSVListToRecCheck%
+}
+\NewDocumentCommand{\TailScSVListToRecCheck}{m}{%
+  ;%
+  \rule{0pt}{1.5ex}{\FormatRecCheckStyle{#1}}%
+  \let\HeadScSVListToRecCheck\TailScSVListToRecCheck%
+}
+
+
+% ~ CSV list separated , for recursive process triple
+\NewDocumentCommand{\CSVListToRecPrc}{>{\SplitList{,}}m}{%
+  \ProcessList{#1}{\HeadCSVListToRecPrc}
+}
+\NewDocumentCommand{\HeadCSVListToRecPrc}{m}{%
+  \rule{0pt}{1.5ex}{\FormatRecVarStyle{#1}}%
+  \let\HeadCSVListToRecPrc\TailCSVListToRecPrc%
+}
+\NewDocumentCommand{\TailCSVListToRecPrc}{m}{%
+  ,%
+  \rule{0pt}{1.5ex}{\FormatRecVarStyle{#1}}%
+  \let\HeadCSVListToRecPrc\TailCSVListToRecPrc%
+}
+
+% ~ CSV list separated , for recursive definition triple
+\NewDocumentCommand{\CSVListToRecCheck}{>{\SplitList{,}}m}{%
+  \ProcessList{#1}{\HeadCSVListToRecCheck}
+}
+\NewDocumentCommand{\HeadCSVListToRecCheck}{m}{%
+  \rule{0pt}{1.5ex}{\FormatRecCheckStyle{#1}}%
+  \let\HeadCSVListToRecCheck\TailCSVListToRecCheck%
+}
+\NewDocumentCommand{\TailCSVListToRecCheck}{m}{%
+  ,%
+  \rule{0pt}{1.5ex}{\FormatRecCheckStyle{#1}}%
+  \let\HeadCSVListToRecCheck\TailCSVListToRecCheck%
+}

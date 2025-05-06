@@ -1,0 +1,347 @@
+% we define our own \note
+\let\Oldnote\note
+\let\note\relax
+
+%% adjust how far notes run into margins
+\setlength\marginparwidth{1.2in}
+
+
+\makeatletter
+\NewDocumentCommand{\ColorText}{O{red} m}{%
+  %% #1 : [] : (optional) color argument
+  %% #2 : {} : (mandatory) tex to highlight
+  % \sethlcolor{hlbackgroundwhite}%
+  % {\color{#1}\hl{#2}}%
+  {\color{#1}#2}%
+}
+\makeatother
+
+
+% we redefine \marginpar to not leave spaces
+% https://tex.stackexchange.com/a/387614
+\let\oldmarginpar\marginpar
+\renewcommand{\marginpar}[1]{%
+  \leavevmode%
+  \oldmarginpar{#1}%
+  \ignorespacesafterend\ignorespaces%
+}
+
+% for numbering/indexing note marks
+\newcounter{notecounter}
+\setcounter{notecounter}{0}
+
+% \definecolor{hlbackground}{rgb}{1.0, 0.7, 0.6}
+% \definecolor{hlbackgroundwhite}{rgb}{1,1,1}
+
+% inserts entry into table of contents
+% (used by note macros, if enabled)
+% #1 : [] : (optional, default=black) color
+% #2 : {} : long text
+% #3 : {} : (optonal) short text
+\NewDocumentCommand{\NoteContentsLine}{O{black} m g}{%
+  % \setnotelabel\label{mn:\thenotecounter}%
+  \ifshowNotesTOC%
+    \phantomsection%
+    \addcontentsline{toc}{subsubsection}{%
+      \texorpdfstring{%
+        \color{#1}\llap{(\thenotecounter)\ $\Rightarrow$\ }%
+        \parbox[t]{0.6\linewidth}{\IfValueT{#3}{#3:~}#2}%
+      }{\IfValueTF{#3}{#3}{#2}}%
+    }%
+  \else\fi
+}
+
+
+
+% % for highlighting background text
+% % https://tex.stackexchange.com/a/297736
+\definecolor{hlbackground}{rgb}{1.0, 0.7, 0.6}
+\definecolor{hlbackgroundwhite}{rgb}{1,1,1}
+% \makeatletter
+% \def\SOUL@hlpreamble{%
+%     \setul{}{2.5ex}%
+%     \let\SOUL@stcolor\SOUL@hlcolor%
+%     \dimen@\SOUL@ulthickness%
+%     \dimen@i=-1.0ex%
+%     \advance\dimen@i-.5\dimen@%
+%     \edef\SOUL@uldepth{\the\dimen@i}%
+%     \let\SOUL@ulcolor\SOUL@stcolor%
+%     \SOUL@ulpreamble%
+% }
+% \makeatother
+
+
+%% TODO
+%% ? math mode tcolbox linking
+
+
+\newcommand\tcolorHighlight{orange!20!red!50!white}
+
+\newcommand{\tcolHighlight}[1]{\tcboxmath[boxsep=0mm,colback=\tcolorHighlight,colframe=black!0,size=minimal]{#1}}
+
+% #1 : s* : call from \notelist or \note? (otherwise, step before hand)
+\NewDocumentCommand{\notemark}{s O{blue}}{%
+  % if not from note, is mathmode, step counter first
+  \IfBooleanF{#1}{\refstepcounter{notecounter}}%
+  \ifvmode% ? start of paragraph/environment
+    \smash{\clap{\raisebox{4pt}{%
+          \tikz[baseline=(noteID.base), font=\tiny, scale=1]{%
+            \node[inner sep=0pt,outer sep=0pt,color=#2] (noteID) {(\ref{mn:\thenotecounter})};
+            \node[fill=white,fit=(noteID),rounded corners=0.5pt,inner sep=0pt] {};%
+            \node[inner sep=0pt,outer sep=0pt,color=#2] at (noteID) {(\ref{mn:\thenotecounter})};
+          }%
+        }}}%
+    % \smash{\clap{\raisebox{3pt}{%
+    %     \ColorText[##5]{%
+    %         \scriptsize\WrapMathMode{^{(\thenotecounter)}}%
+    %     }%
+    % }}}%
+  \else% ? in body of text
+    \smash{\clap{\raisebox{7.5pt}{%
+          \tikz[baseline=(noteID.base), font=\tiny, scale=1]{%
+            \node[inner sep=0pt,outer sep=0pt,color=#2] (noteID) {(\ref{mn:\thenotecounter})};
+            \node[fill=white,fit=(noteID),rounded corners=0.5pt,inner sep=0pt] {};%
+            \node[inner sep=0pt,outer sep=0pt,color=#2] at (noteID) {(\ref{mn:\thenotecounter})};
+          }%
+        }}}%
+    % \smash{\clap{\raisebox{3pt}{%
+    %     \ColorText[##5]{%
+    %         \scriptsize\WrapMathMode{^{(\thenotecounter)}}%
+    %     }%
+    % }}}%
+  \fi%
+}
+
+% \NewDocumentCommand{\mathnote}{m}{%
+%     \ifshownotes{{%
+%     }}%
+% }
+
+%% '? \notelist
+%% automatically created with \NewAuthorNote
+%% itemize and enumerate
+%% always inline block
+
+
+%% partial source:
+%% https://tex.stackexchange.com/questions/147710/how-to-start-itemize-on-same-line-as-text
+\newlength{\jeroenlen}
+
+
+% #1 : s* : (optional) itemize? (without => enumerate)
+% #2 : [] : (optional) name
+% #3 : [] : (optional) short abbrev
+% #4 : {} : note list content (\item)
+% #5 : [] : (optional, default=black) text color
+\NewDocumentCommand{\notelist}{s o o G{\dots} O{black}}{%
+  \settowidth{\jeroenlen}{\smash{\llap{\WrapMathMode{^{(\thenotecounter)}}\IfValueT{#2}{\bfseries #2:}}}}%
+  \ifshownotes{{%
+        \refstepcounter{notecounter}%
+        \ColorText[#5]{%
+          \begin{description}[leftmargin=\jeroenlen,labelwidth=0pt,labelsep=0pt]%
+            \item[\smash{\llap{\WrapMathMode{^{(\thenotecounter)}}\IfValueT{#2}{\bfseries #2:\IfValueT{#3}{~}}}}]%
+                  \IfValueT{#3}{\smash{\rlap{#3}}}%
+                  \IfBooleanTF{#1}{% ? itemize
+                    \begin{itemize}[leftmargin=1.5em,labelsep=.5em]#4\end{itemize}%
+                  }{% ? enumerate
+                    \begin{enumerate}[leftmargin=1.5em,labelsep=.5em]#4\end{enumerate}%
+                  }%
+          \end{description}%
+        }%
+        % add to table of contents
+        \ifshowNotesTOC{{%
+              \NoteContentsLine[#5]{#2: #3}{note list}%
+            }}\else\fi%
+      }}\else\fi%
+}
+
+%
+% #1 : s* : (optional) inline note
+% #2 : |  : (optional) inline + block note
+% #3 : [] : (optional, default=black) note color
+% #4 : {} : (mandatory) note text
+% #5 : [] : (optional) name
+\NewDocumentCommand{\note}{s t| O{black} G{\dots} o t+}{%
+  \ifshownotes{{%
+        \IfBooleanTF{#1}{% ? inline 
+          \IfBooleanTF{#2}{% ? block note
+            \hspace*{\fill}\par\noindent%
+            \ColorText[#3]{%
+              \IfValueT{#5}{\llap{\bfseries #5:}~}{#4}%
+            }%
+            \hspace*{\fill}\par%
+          }{%
+            % \hfill%
+            \hspace{6pt}%
+            \ColorText[#3]{%
+              \IfValueT{#5}{{\bfseries #5:}~}{#4}%
+            }%
+          }%
+        }{% margin note
+          \IfBooleanTF{#6}{%
+            \marginpar{%
+              \ColorText[#3]{%
+                \scriptsize%
+                \smash{\llap{\WrapMathMode{^{\hyperlink{toc}{(\thenotecounter)}}}}}%
+                \IfValueT{#5}{{\bfseries #5:}~}%
+                {#4}\hspace*{\fill}%
+              }%
+            }\label{mn:\thenotecounter}%
+          }{%
+            \refstepcounter{notecounter}%
+            \marginpar{%
+              \ColorText[#3]{%
+                \scriptsize%
+                \smash{\llap{\WrapMathMode{^{\hyperlink{toc}{(\thenotecounter)}}}}}%
+                \IfValueT{#5}{{\bfseries #5:}~}%
+                {#4}\hspace*{\fill}%
+              }%
+            }\label{mn:\thenotecounter}%
+          }%
+        }%
+      }}\else\fi%
+}
+
+
+% % wrap \textcite in \mbox to fix compilation error
+% \let\Backupcite\textcite%
+% \makeatletter
+% \newcommand\wrapcite[1]{\mbox{\Backupcite{#1}}}%
+% \makeatother
+% \makeatletter
+% \NewDocumentCommand{\hlwrapper}{m}{%
+%     \begingroup%
+%     \let\textcite\wrapcite%
+%     \hl{#1}%
+%     \let\textcite\Backupcite%
+%     \endgroup%
+% }
+% \makeatother
+
+
+% % 
+% % custom author notes
+% % 
+\makeatletter
+% #1 : s* : (optional *) use different color for prefix ? (default=#2)
+% #2 : color (optional)
+% #3 : \name
+% #4 : prefix
+% #5 : (optional) prefix color
+% #6 : (optional) also define list ? \namelist
+\NewDocumentCommand{\NewAuthorNote}{s O{blue} m m o g}{%
+%
+\IfValueT{#6}{%
+  % ##1 : s* : (optional) itemize? (without => enumerate)
+  % ##2 : [] : (optional) short abbrev
+  % ##3 : {} : note list content (\item)
+  % ##4 : [] : (optional, default=black) text color
+  \NewDocumentCommand{#6}{s o G{\dots} O{#2}}{%
+    \begingroup%
+    \ifshowNotesTOC\setcounter{tocdepth}{5}\else\fi%
+    \IfBooleanTF{##1}{%
+      \notelist*[\IfValueTF{#5}{\ColorText[#5]{#4}}{\ColorText[#2]{#4}}][##2]{##3}[##4]%
+    }{%
+      \notelist[\IfValueTF{#5}{\ColorText[#5]{#4}}{\ColorText[#2]{#4}}][##2]{##3}[##4]%
+    }%
+    \endgroup%
+  }%
+}%
+%
+% ##1 : s* : inline?
+% ##2 : t| : inline + move to own line?
+% ##3 : {} : note text
+% ##4 : {} : note text (optional, will be omitted from TOC)
+% ##5 : [] : note text color
+% ##6 : e| : highlight background text
+% ##7 : [] : highlight background text color
+% ##8 : t+ : hi
+\NewDocumentCommand{#3}{s t| G{\dots} g O{#2} e| O{hlbackground} t+}{%
+\ifshownotes{{\begingroup%
+\ifshowNotesTOC\setcounter{tocdepth}{5}\else\fi%
+% % insert margin par
+\IfBooleanTF{##1}{%
+\IfBooleanF{##8}{\refstepcounter{notecounter}}%
+\IfBooleanTF{##2}{%
+\IfBooleanTF{##8}{%
+\note*|[##5]{##3\IfValueT{##4}{\ \allowbreak##4}}[%
+% % only place marker at the start if inline
+\smash{\llap{\hyperlink{toc}{\WrapMathMode{^{(\thenotecounter)}}}}}%
+\IfBooleanTF{#1}{% ? use different color to highlight prefix
+  \IfValueTF{#5}{\ColorText[#5]{#4}}{\ColorText[#2]{#4}}%
+}{{#4}}%
+]+%
+}{%
+\note*|[##5]{##3\IfValueT{##4}{\ \allowbreak##4}}[%
+% % only place marker at the start if inline
+\smash{\llap{\hyperlink{toc}{\WrapMathMode{^{(\thenotecounter)}}}}}%
+\IfBooleanTF{#1}{% ? use different color to highlight prefix
+  \IfValueTF{#5}{\ColorText[#5]{#4}}{\ColorText[#2]{#4}}%
+}{{#4}}%
+]%
+}%
+}{%
+\IfBooleanTF{##8}{%
+  \note*[##5]{##3\IfValueT{##4}{\ \allowbreak##4}}[%
+    % % only place marker at the start if inline
+    \smash{\llap{\hyperlink{toc}{\WrapMathMode{^{(\thenotecounter)}}}}}%
+    \IfBooleanTF{#1}{% ? use different color to highlight prefix
+      \IfValueTF{#5}{\ColorText[#5]{#4}}{\ColorText[#2]{#4}}%
+    }{{#4}}%
+  ]+%
+}{%
+  \note*[##5]{##3\IfValueT{##4}{\ \allowbreak##4}}[%
+    % % only place marker at the start if inline
+    \smash{\llap{\hyperlink{toc}{\WrapMathMode{^{(\thenotecounter)}}}}}%
+    \IfBooleanTF{#1}{% ? use different color to highlight prefix
+      \IfValueTF{#5}{\ColorText[#5]{#4}}{\ColorText[#2]{#4}}%
+    }{{#4}}%
+  ]%
+}%
+}%
+}{%
+\IfBooleanTF{##8}{%
+  \note[##5]{##3\IfValueT{##4}{\ \allowbreak##4}}[%
+    \IfBooleanTF{#1}{% ? use different color to highlight prefix
+      \IfValueTF{#5}{\ColorText[#5]{#4}}{\ColorText[#2]{#4}}%
+    }{{#4}}%
+  ]+%
+}{%
+  \note[##5]{##3\IfValueT{##4}{\ \allowbreak##4}}[%
+    \IfBooleanTF{#1}{% ? use different color to highlight prefix
+      \IfValueTF{#5}{\ColorText[#5]{#4}}{\ColorText[#2]{#4}}%
+    }{{#4}}%
+  ]%
+}%
+}%
+% add to table of contents
+\ifshowNotesTOC{{%
+\NoteContentsLine[##5]{##3\IfValueT{##4}{~[\dots]}}{\texorpdfstring{%
+  \IfBooleanTF{#1}{% ? use different color to highlight prefix
+    \IfValueTF{#5}{\ColorText[#5]{#4}}{\ColorText[#2]{#4}}%
+  }{{#4}}}{#4}%
+}%
+}}\else\fi%
+% % place highlighted background text before marker
+\IfValueT{##6}{%
+  \sethlcolor{##7}%
+  \hl{##6}%
+  % \hlwrapper{##6}%
+}%
+% % margin par marker
+% \setnotelabel\label{mn:\thenotecounter}%
+% % only place marker at the end if in margin
+\IfBooleanF{##1}{\IfBooleanF{##8}{\notemark*}}%
+\endgroup}}\else\fi%
+}%
+%
+% % old version:
+% % #1 : color (optional)
+% % #2 : \name
+% % #3 : prefix
+% \newcommand\NewAuthorNote[3][blue]{%
+% % ##1 : color
+% % ##2 : text
+% \newcommand{#2}[2][#1]{\note[##1]{##2}[#3]}}%
+}
+\makeatother

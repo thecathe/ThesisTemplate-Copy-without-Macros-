@@ -1,0 +1,65 @@
+
+%% following: https://tex.stackexchange.com/questions/38544/glossary-links-color
+\makeatletter
+\newcommand*{\glsplainhyperlink}[2]{%
+  \begingroup%
+  \ifglshaslong{\glslabel}%% * does it have long version?
+  {\hyperlink{#1}{#2}}%
+  {%
+    \hypersetup{hidelinks}%
+    \hyperlink{#1}{#2}%
+  }%% ? used for the first occurrence of abbr/acro (per chapter, and hyper=false is overridden)
+  % \hypersetup{hidelinks}%
+  % \hyperlink{#1}{#2}%
+  \endgroup%
+}
+\let\@glslink\glsplainhyperlink
+\makeatother
+
+
+\makeglossaries
+
+\setabbreviationstyle[abbreviation]{long-postshort-user}
+
+\glssetcategoryattribute{abbreviation}{nohyperfirst}{true}
+\glssetcategoryattribute{general}{glossname}{title}
+
+
+%% following: https://tex.stackexchange.com/questions/386107/using-package-glossary-and-hyperref-for-acronyms-only-link-from-abbreviation
+\renewcommand*{\glsxtruserparen}[2]{%
+  \glsxtrfullsep{#2}% space between long part and parenthetical material
+  (\glshyperlink[#1]{#2})%
+}
+
+\renewcommand*{\glslinkcheckfirsthyperhook}{%
+  \ifglsused{\glslabel}%
+  {%% * gls label used after first occurrence (configured to be per-chapter)
+    \ifglshaslong{\glslabel}%% * does it have long version?
+    {\setkeys{glslink}{hyper=true,textformat=normalfont}}%% ? used for abbr/acro that have already been expanded
+    {\setkeys{glslink}{hyper=true,textformat=normalfont}}%% ? used for general gls that have already been used once
+  }{%% * first use of gls in chapter (hyper=false is overridden, link still included)
+    \ifglshaslong{\glslabel}%% * does it have long version?
+    {\setkeys{glslink}{hyper=false,textformat=normalfont}}%% ? used for the first occurrence of abbr/acro (per chapter, and hyper=false is overridden)
+    {\setkeys{glslink}{hyper=true,textformat=normalfont}}%% ? used for the first occurrence of general gls (hyper=false would disable link)
+  }%
+}
+
+
+
+
+\newabbreviation%
+[description={\textbf{R}equest \textbf{F}or \textbf{C}omments}]
+{RFC}
+{RFC}
+{{R}equest {F}or {C}omments}
+
+
+
+\newglossaryentry{pi-calculus}
+{
+  name={${\pi}$-calculus},
+  description={First presented in~\textcite{Milner1999}, the $\pi$-calculus combines elements of the \gls{lambda-calculus}, \glsfirst{CCS} and \glsfirst{CSP} into a single language for describing the behaviour of concurrent processes that exchange information via message-passing.},
+  sort={pi-calculus}
+}
+
+

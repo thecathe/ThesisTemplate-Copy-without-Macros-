@@ -1,0 +1,18 @@
+
+% for inner figure equation spacing
+\newlength{\FigEqHRuleSpacingBefore}
+\newlength{\FigEqHRuleSpacingAfter}
+
+% \setlength{\FigEqHRuleSpacingBefore}{0.45ex}
+% \setlength{\FigEqHRuleSpacingAfter}{0.25ex}
+
+\setlength{\FigEqHRuleSpacingBefore}{0ex}
+\setlength{\FigEqHRuleSpacingAfter}{2ex}
+
+
+% % adds: (for creating a horizontal rule between two block environments in fig)
+\NewDocumentCommand{\FigHRule}{}{%
+    \vspace{\FigEqHRuleSpacingBefore}%
+    {\color{lightgray}\hrule}%
+    \vspace{\FigEqHRuleSpacingAfter}%
+}

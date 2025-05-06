@@ -1,0 +1,124 @@
+
+%% adds a triangle to the end of these environments (similar to qed)
+% adjusts the example environment to display a triangle at the end
+\let\exaCopy\exa%
+\let\endexaCopy\endexa%
+\let\theexaCopy\theexa%
+
+\NewCommandCopy{\proofqedsymbol}{\qedsymbol}
+\newcommand{\exampleqedsymbol}{$\triangle$}
+
+% % set height of triangle for ending with eq
+% \newdimen{\triangleheight}
+% % \settoheight{\triangleheight}{\hbox{$\triangle$}}
+% \setbox0=\hbox{$\triangle$}
+% \triangleheight=\ht0 \advance\triangleheight by \dp0
+
+
+
+% following : https://tex.stackexchange.com/a/32394
+% \AtBeginEnvironment{proof}{\renewcommand{\qedsymbol}{\proofqedsymbol}}
+
+% \theoremstyle{definition}
+% \newtheorem*{exaDenotedThm}{Example}
+% \AtBeginEnvironment{exaDenotedThm}{\pushQED{\qed}\renewcommand{\qedsymbol}{\exampleqedsymbol}}%
+% % \AtEndEnvironment{exaDenotedThm}{\popQED\endexaDenotedThm}
+% \AtEndEnvironment{exaDenotedThm}{\popQED\endexa}
+
+% \let\exa\exaDenotedThm
+% \let\endexa\endexaDenotedThm
+% \endinput
+
+
+% - - - - - - - - - - -  - - -
+
+% \newenvironment{exaDenoted}%
+
+% % following: https://tex.stackexchange.com/a/16457
+\newcommand\xqed[1][$\triangle$]{%
+  \leavevmode\unskip\penalty9999 \hbox{}\nobreak\hfill
+  \quad\hbox{#1}}
+
+\NewDocumentEnvironment{exaDenoted}{s o}%
+{%
+  %
+  %% adding to contents, following:
+  %% https://tex.stackexchange.com/a/87878/333856
+  %
+  % \expandafter\exaCopy\if\relax\detokenize{#1}\relax\else[#1]\fi
+  \expandafter\IfValueTF{#2}{\exaCopy[#2]}{\exaCopy}
+  % \addcontentsline{toc}{subsubsection}{\protect\numberline{}Example\IfValueTF{#1}{~(#1)}{~(\currentname)}}
+  % \addcontentsline{toc}{subsection}{\protect\numberline{}Example~\IfValueTF{#2}{(#2)}{\IfBooleanTF{#1}{(\currentname)}{\theexaCopy}}}
+  \addcontentsline{toc}{subsection}{\protect\numberline{}\IfValueTF{#2}{#2}{\IfBooleanTF{#1}{\currentname}{\theexaCopy}}~(Example)}
+  %
+  %
+  %
+  % \pushQED{\exampleqedsymbol}%
+  %
+  %
+  % \IfValueTF{#1}{\exaCopy[#1]}{\exaCopy}%
+  %
+  %
+  %
+  % \pushQED{\xqed}%
+  % \leavevmode\unskip\penalty9999 \hbox{}\nobreak
+  % \exaDenotedThm%
+}%
+%
+{%
+  % \qedhere%
+  % \ignorespacesafterend% 
+  % \IfBooleanT{#1}{\ignorespacesafterend}%
+  % \IfBooleanT{#1}{\vspace*{-1ex}}%
+  \xqed[\exampleqedsymbol]%
+  % \endexaDenotedThm%
+  \endexaCopy%
+  % \popQED%
+}%
+
+% 
+\let\exa\exaDenoted%
+\let\endexa\endexaDenoted%
+
+
+
+\NewDocumentCommand{\ManualExaQED}{s}{%
+  \IfBooleanTF{#1}{% is below math?
+    \unskip\ignorespacesafterend\xqed*[.]
+    % \unskip\ignorespacesafterend
+    % \xqed[\raisebox{\dimexpr -\ExampleTriangleHeight+\baselineskip\relax}{\exampleqedsymbol}]
+    % \vspace{-\ExampleTriangleHeight}\vspace{-\belowdisplayskip}
+  }{\unskip\ignorespacesafterend\xqed[\exampleqedsymbol]}
+}
+
+
+
+% \let\proofqedsymbol\qedsymbol
+
+% \AtBeginEnvironment{example}{%
+%   \pushQED{\qed}\renewcommand{\qedsymbol}{\Large$\triangle$}%
+% }
+% \AtEndEnvironment{example}{\popQED\endexample\renewcommand{\qedsymbol}{\proofqedsymbol}}
+
+
+\AtBeginEnvironment{usecase}{%
+  % \pushQED{\qed}\renewcommand{\qedsymbol}{\Large$\triangle$}%
+  \pushQED{\qed}\renewcommand{\qedsymbol}{$\triangle$}%
+}
+\AtEndEnvironment{usecase}{\popQED\endusecase\renewcommand{\qedsymbol}{\proofqedsymbol}}
+
+
+
+\AtBeginEnvironment{rem}{%
+  % \pushQED{\qed}\renewcommand{\qedsymbol}{\Large$\triangle$}%
+  \pushQED{\qed}\renewcommand{\qedsymbol}{$\triangle$}%
+}
+\AtEndEnvironment{rem}{\popQED\endrem\renewcommand{\qedsymbol}{\proofqedsymbol}}
+
+
+% \AtBeginEnvironment{remark}{%
+%   \pushQED{\qed}\renewcommand{\qedsymbol}{\Large$\triangle$}%
+% }
+% \AtEndEnvironment{remark}{\popQED\endremark\renewcommand{\qedsymbol}{\proofqedsymbol}}
+
+

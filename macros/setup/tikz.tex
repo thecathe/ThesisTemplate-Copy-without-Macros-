@@ -1,0 +1,21 @@
+
+% ! tikz: https://www.bu.edu/math/files/2013/08/tikzpgfmanual.pdf
+\usetikzlibrary{shapes,trees,tikzmark,arrows,automata,backgrounds,petri,positioning,fit,calc,decorations.markings,shadows,fadings,patterns,decorations.pathreplacing}
+
+\newcounter{tmkcount}
+\tikzset{
+  use tikzmark/.style={
+      remember picture,
+      overlay,
+      execute at end picture={
+          \stepcounter{tmkcount}
+        },
+    },
+  tikzmark suffix={-\thetmkcount}
+}
+
+
+\tikzset{cross/.style={cross out, draw=black, minimum size=2*(#1-\pgflinewidth), inner sep=0pt, outer sep=0pt},
+  %default radius will be 1pt. 
+  cross/.default={1pt}}
+

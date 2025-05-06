@@ -1,0 +1,690 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Masters/Doctoral Thesis 
+% LaTeX Template
+% Version 2.5 (27/8/17)
+%
+% This template was downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Version 2.x major modifications by:
+% Vel (vel@latextemplates.com)
+%
+% This template is based on a template by:
+% Steve Gunn (http://users.ecs.soton.ac.uk/srg/softwaretools/document/templates/)
+% Sunil Patel (http://www.sunilpatel.co.uk/thesis-template/)
+%
+% Template license:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%--------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%--------------------------
+
+\documentclass[
+11pt,              %% The default document font size, options: 10pt, 11pt, 12pt
+% oneside,         %% Two side (alternating margins) for binding by default, uncomment to switch to one side
+english,           %% ngerman for German
+doublespacing,     %% singlespacing, % Single line spacing, alternatives: onehalfspacing or doublespacing
+%draft,            %% Uncomment to enable draft mode (no pictures, no links, overfull hboxes indicated)
+%nolistspacing,    %% If the document is onehalfspacing or doublespacing, uncomment this to set spacing in lists to single
+liststotoc,        %% Uncomment to add the list of figures/tables/etc to the table of contents
+%toctotoc,         %% Uncomment to add the main table of contents to the table of contents
+%parskip,          %% Uncomment to add space between paragraphs
+%nohyperref,       %% Uncomment to not load the hyperref package
+headsepline,       %% Uncomment to get a line under the header
+%chapterinoneline, %% % Uncomment to place the chapter title next to the number on one line
+%consistentlayout, %% Uncomment to change the layout of the declaration, abstract and acknowledgements pages to match the default layout
+]{MastersDoctoralThesis} %% The class file specifying the document structure
+
+\usepackage[utf8]{inputenc} % Required for inputting international characters
+\usepackage[T1]{fontenc} % Output font encoding for international characters
+
+\usepackage{mathpazo} % Use the Palatino font by default
+
+%% We use biblatex for better style options (both inline and bibliography)
+\usepackage[%
+  autopunct=true,
+  backend=bibtex,
+  natbib=true,
+  %%
+  bibstyle=authoryear,
+  citestyle=authoryear-comp, 
+  %% 
+  maxbibnames=99, %% Show all authors in bibliography
+  maxcitenames=1, %% Show only one author in citation
+  %% 
+  sortcites=true,
+  hyperref=true,  %% Necessary to allow hyperlinks 
+  dashed=false,   
+  %% 
+  % backref=true, %% Uncomment to insert backlinks in bibliography to every occurance of citation
+  % arxiv=pdf,    %%
+]{biblatex} % Use the bibtex backend with the authoryear citation style (which resembles APA)
+
+
+%% following: https://aaronlauterer.com/blog/2020/biblatex-customize-citing/
+\renewcommand*{\postnotedelim}{\addspace}
+
+%% following: https://tex.stackexchange.com/a/65754
+\renewcommand*{\nameyeardelim}{\addspace}
+
+
+
+\addbibresource{main.bib} % The filename of the bibliography
+
+% Required to generate language-dependent quotes in the bibliography
+\usepackage[autostyle=true]{csquotes}
+
+%--------------------------
+%	MARGIN SETTINGS
+%--------------------------
+
+\geometry{
+	paper=a4paper, % Change to letterpaper for US letter
+	inner=2.5cm, % Inner margin
+	outer=3.8cm, % Outer margin
+	bindingoffset=.5cm, % Binding offset
+	top=1.5cm, % Top margin
+	bottom=1.5cm, % Bottom margin
+	%showframe, % Uncomment to show how the type block is set on the page
+  head=21.89601pt,
+}
+
+
+%% for author tools when writing
+\newif\ifdraftmode
+\newif\ifshownotes
+\newif\ifshowpageframe
+\newif\ifshowNotesTOC
+
+%%    ____             __ _         
+%%   / ___|___  _ __  / _(_) __ _ _ 
+%%  | |   / _ \| '_ \| |_| |/ _` (_)
+%%  | |__| (_) | | | |  _| | (_| |_ 
+%%   \____\___/|_| |_|_| |_|\__, (_)
+%%                          |___/   
+
+% \draftmodetrue % ! comment out to turn off draft mode (overrides the rest below)
+\shownotestrue % ! comment out to hide notes
+\showNotesTOCtrue % ! comment out to hide notes in TOC
+% \showpageframetrue % ! comment out to hide page boarder frames
+
+
+%%---------
+%% TOC depth cheat sheet
+%%---------
+%% 0 -> chapter
+%% 1 -> section
+%% 2 -> subsection
+%% 3 -> subsubsection
+%% 4 -> paragraph
+%% 5 -> subparagraph
+
+\ifdraftmode
+  \ifshownotes
+    \ifshowNotesTOC%
+      \setcounter{tocdepth}{5}% 
+    \else\fi
+  \else
+    \setcounter{tocdepth}{3}% 
+  \fi
+\else
+  \setcounter{tocdepth}{3}% 
+\fi%
+
+
+% %
+% % lengths (for spacing)
+% %
+\input{spacing/fig.tex}
+\input{spacing/array.tex}
+
+%% the below is the spacing inserted by a rework macro 
+%% (just makes a red horizontal line and some padding.) 
+%% (useful when wanting to "draw a line" above some old work when refactoring)
+\input{spacing/rework_sep.tex}
+
+
+
+%% force import template tools without breaking
+%% necessary to ensure all packages can be imported
+%% (provides \IfPackageNotLoaded{...})
+\ifdefined\ifdraft%
+    \let\oldifdraft\ifdraft
+    \let\ifdraft\relax
+    \usepackage{templatetools}
+    \let\ifdraft\oldifdraft
+\else%
+    % https://anorien.csc.warwick.ac.uk/mirrors/CTAN/macros/latex/contrib/templatetools/templatetools.pdf
+    \usepackage{templatetools}
+\fi%
+
+
+
+
+%% essential improvements to textual spacing
+\IfPackageNotLoaded{microtype}{\usepackage{microtype}}
+
+%% better macro definitions
+\IfPackageNotLoaded{xparse}{\usepackage{xparse}}
+
+
+%% if-then-else macros
+\IfPackageNotLoaded{ifthen}{\usepackage{ifthen}}
+\IfPackageNotLoaded{ifdraft}{\usepackage{ifdraft}}
+
+%% latex utilities
+\IfPackageNotLoaded{calc}{\usepackage{calc}}
+\IfPackageNotLoaded{etoolbox}{\usepackage{etoolbox}}
+
+%% suppresses error messages
+\IfPackageNotLoaded{silence}{\usepackage{silence}}
+
+%% for fixing errors about wrong font sizes
+\IfPackageNotLoaded{anyfontsize}{\usepackage{anyfontsize}}
+
+%%
+%% color packages
+%%
+\IfPackageNotLoaded{color}{\usepackage{color}}
+\IfPackageNotLoaded{xcolor}{\usepackage[dvipsnames,hyperref]{xcolor}}
+\IfPackageNotLoaded{colortbl}{\usepackage{colortbl}}
+\input{macros/setup/define_colors.tex}
+
+
+%%
+%% graphics and floats
+%%
+\IfPackageNotLoaded{graphicx}{\usepackage{graphicx}}
+\IfPackageNotLoaded{tikz}{\usepackage{tikz}}
+\IfPackageNotLoaded{tcolorbox}{\usepackage[theorems,xparse,most]{tcolorbox}}
+
+%% for svg 
+\IfPackageNotLoaded{svg}{\usepackage[inkscapelatex=false]{svg}}
+
+
+
+
+%% page dimensions, show boarders (?)
+\IfPackageNotLoaded{geometry}{%
+    \ifshowpageframe \usepackage[pass,showframe]{geometry}
+    \else            \usepackage[pass]{geometry}
+    \fi
+}
+
+%%
+%% floats
+%%
+\IfPackageNotLoaded{float}{\usepackage{float}}
+\IfPackageNotLoaded{caption}{\usepackage{caption}}
+\IfPackageNotLoaded{subcaption}{\usepackage{subcaption}}
+\IfPackageNotLoaded{wrapfig}{\usepackage{wrapfig}}
+
+
+
+\IfPackageNotLoaded{multicol}{\usepackage{multicol}}
+
+
+\IfPackageNotLoaded{rotating}{\usepackage{rotating}}
+
+
+\IfPackageNotLoaded{proof}{\usepackage{proof}}
+\IfPackageNotLoaded{mathpartir}{\usepackage{mathpartir}}
+\IfPackageNotLoaded{mathtools}{\usepackage{mathtools}}
+
+% \let\subseteq\relax
+\IfPackageNotLoaded{amsmath}{\usepackage{amsmath}}
+
+% ? resolve conflict with proof environment
+\let\proof\relax%
+\let\endproof\relax%
+\IfPackageNotLoaded{amsthm}{\usepackage{amsthm}}
+
+\IfPackageNotLoaded{thmtools}{\usepackage{thmtools}}
+\IfPackageNotLoaded{thm-restate}{\usepackage{thm-restate}}
+
+
+\IfPackageNotLoaded{longtable}{\usepackage{longtable}}
+\IfPackageNotLoaded{tabularx}{\usepackage{tabularx}}
+\IfPackageNotLoaded{multirow}{\usepackage{multirow}}
+
+
+\IfPackageNotLoaded{xfrac}{\usepackage{xfrac}}
+\IfPackageNotLoaded{delarray}{\usepackage{delarray}}
+
+%% for better textual paragraph environments 
+%% https://mirror.ox.ac.uk/sites/ctan.org/macros/latex/contrib/enumitem/enumitem.pdf
+\IfPackageNotLoaded{enumitem}{\usepackage[inline]{enumitem}}
+
+
+%% code snippets
+\IfPackageNotLoaded{listings}{
+    \newlength{\listingsnumwidth}
+    \setlength{\listingsnumwidth}{0.8em}    
+    \usepackage{listings}
+}
+
+
+
+
+\IfPackageNotLoaded{amsfonts}{\usepackage{amsfonts}}
+\let\ulcorner\relax%
+\let\urcorner\relax%
+\let\llcorner\relax%
+\let\lrcorner\relax%
+
+\IfPackageNotLoaded{amstext}{\usepackage{amstext}}
+
+
+
+\IfPackageNotLoaded{amssymb}{\usepackage{amssymb}}
+\let\emptyset\varnothing%
+
+\IfPackageNotLoaded{amsbsy}{\usepackage{amsbsy}}
+
+\IfPackageNotLoaded{stmaryrd}{\usepackage{stmaryrd}}
+
+\IfPackageNotLoaded{AnonymousPro}{\usepackage[ttdefault=true]{AnonymousPro}}
+
+
+\IfPackageNotLoaded{fontawesome}{\usepackage{fontawesome}}
+\let\eyesymbol\faEye
+
+
+
+\IfPackageNotLoaded{soul}{\usepackage{soul}}
+\let\oldst\st%
+\let\st\relax%
+\IfPackageNotLoaded{ulem}{\usepackage{ulem}}
+%% non underlined emph
+\normalem%
+
+
+\usepackage{varioref}
+
+\IfPackageNotLoaded{hyperref}{\usepackage[colorlinks=true,final]{hyperref}}
+\IfPackageNotLoaded{cleveref}{\usepackage[nameinlink]{cleveref}}
+\IfPackageNotLoaded{bookmark}{\usepackage[depth=5,atend]{bookmark}}
+
+
+%% 
+%% Custom colors (used by the original theme)
+%% 
+\colorlet{mdtRed}{red!50!black}
+\colorlet{mdtBlue}{blue!50!black}
+
+\hypersetup{
+    % * links
+    % hyperindex=true,
+    linktocpage=false,%true,
+    colorlinks=true,
+    breaklinks=true,
+    % pagebackref,pdfpagelabels,
+    % % * bookmarks
+    % bookmarks=true,
+    bookmarksnumbered=true,
+    bookmarksopen=true,
+    bookmarksopenlevel=0,
+    unicode,
+    % * colors
+    linkcolor=mdtRed,
+    anchorcolor=red,
+    citecolor=magenta,
+    filecolor=green,
+    urlcolor=mdtBlue,
+    % * border colors
+    citebordercolor={0 0 0},
+    filebordercolor={1 0 1},
+    linkbordercolor={0 0 0},
+    menubordercolor={0 0 0},
+    urlbordercolor={0 0 0},
+    % * meta
+    %% below are handled later by `\AtBeginDocument' just be for begin document
+    % pdftitle={},
+    % pdfauthor={},
+    % pdfstartpage=1
+}
+
+
+
+\IfPackageNotLoaded{doi}{\usepackage{doi}}
+
+
+
+% \usepackage[toc=true,hyperfirst=false]{glossaries}
+%%
+%% https://gb.mirrors.cicku.me/ctan/macros/latex/contrib/glossaries/glossaries-user.pdf
+\usepackage[automake,% run with only this if need to remake main.gls
+% acronyms,% not compatible with the -extra abbreviations
+% acronyms,
+% abbreviation,
+abbreviations,
+% shortcuts=abbr,
+numberline=false,
+section=chapter,
+numberedsection=false,
+% xindy,% ! (stops gloss/etc from updating) requires perl to be installed on the machine. required for renaming 
+% style=indexhypergroup,
+% style=mcoltreehypergroup,
+% stylemods=mcols,
+% stylemods=inline,
+% stylemods={longextra},
+entrycounter=false,
+autoseeindex=true,
+equations=true,% point back to equation number if inside
+floats=true,% point back to float label if inside
+% indexcrossrefs=true,% show where they are used
+hyperfirst=false,
+toc=true,
+shortcuts,
+% nogroupskip,
+]{glossaries-extra}
+
+
+
+%% used sometimes in the example environment
+\usepackage{titleref}
+\makeatletter
+\newcommand*{\currentname}{\TR@currentTitle}
+\makeatother
+
+
+%% change indentation of subsubsection (when forced into toc)
+\makeatletter
+\renewcommand*\l@subsubsection{\@dottedtocline{1}{7em}{2.0em}}
+\makeatother
+
+
+
+%% setup all theorems that are used from other classes
+\input{macros/setup/lmcs_environments}
+
+
+
+%%%
+%%% setup
+%%%
+\input{macros/setup/enumitem.tex}
+% \input{macros/setup/hyperref.tex}
+\input{macros/setup/redundant.tex} % resolves conflicts
+\input{macros/setup/subfig.tex}
+\input{macros/setup/tikz.tex}
+
+
+\input{macros/setup/soul.tex}
+
+
+%%%
+%%% tools
+%%% 
+\input{macros/tools/wrapper/math_mode.tex}
+
+%% ! the following must be loaded after \WrapMathMode
+\input{macros/tools/wrapper/substitution.tex}
+\input{macros/tools/wrapper/consistent_vector.tex}
+\input{macros/tools/repeat_char.tex}
+\input{macros/tools/labelled_not_arrows.tex}
+\input{macros/tools/list_processors.tex}
+
+
+
+%% 
+%% custom author notes
+%% 
+\input{macros/notes.tex}
+
+%% tip: use like \footnote (i.e., do not leave a space before use)
+\NewAuthorNote*[orange]{\anote}{A Note}[teal]
+\NewAuthorNote*[purple]{\bnote}{B Note}[teal]
+
+\NewAuthorNote[blue]{\todo}{ToDo}
+\NewAuthorNote[red]{\TODO}{TODO}
+
+\NewAuthorNote[magenta]{\checkme}{Check me}
+\NewAuthorNote[green]{\updateme}{Update me}
+
+%% for author annotations (that do not pertain to the text quality)
+% \NewDocumentCommand{\anno}{m O{cyan}}{\note[#2]{#1}}
+
+%%
+%% custom highlighting commands
+%% 
+\input{macros/anno.tex}% ! note: cannot highlight commands not wrapped in $$
+
+\NewHighlight[lightblue]{\anno}[\note[cyan]]
+\NewDocumentCommand{\findcite}{m O{}}{\anno{#1}\gotocite{#2}}
+
+\NewHighlight[lightpink]{\tocorrect}
+
+\NewHighlight[lightblue]{\hltodo}[\todo]
+\NewHighlight[lightred]{\hlTODO}[\TODO]
+
+
+\NewHighlight[lightyellow]{\tocheck}{to check}
+
+\NewHighlight[lightred]{\tocite}{to cite}
+
+\NewHighlight[lightorange]{\toredo}{to redo}
+
+\NewHighlight[lightorange]{\tofinish}{to finish}
+
+
+
+\NewHighlight[yellow]{\highlight}
+
+
+
+
+%% 
+%% load the rest
+%% 
+\input{macros/symbols.tex}
+
+\input{macros/circled.tex}
+
+
+
+
+
+
+\input{envs/caseanalysis.tex}
+
+\input{envs/info.tex}
+\input{envs/restatable.tex}
+
+%% add triangle to the end of examples
+\input{envs/tweaks_triangle.tex}
+
+
+
+
+
+%--------------------------
+%	THESIS INFORMATION
+%--------------------------
+
+%% Your thesis title, this is used in the title and abstract, print it elsewhere with \ttitle
+\thesistitle{Thesis Title} 
+
+%% Your supervisor's name, this is used in the title page, print it elsewhere with \supname
+\supervisor{Dr. Super \textsc{Visor}} 
+
+%% Your examiner's name, this is not currently used anywhere in the template, print it elsewhere with \examname
+% \examiner{} 
+
+%% Your degree name, this is used in the title page and abstract, print it elsewhere with \degreename
+\Degree{Doctor of Philosophy} 
+
+%% Your name, this is used in the title page and abstract, print it elsewhere with \authorname
+\author{Thesis \textsc{Author}} 
+
+%% Your address, this is not currently used anywhere in the template, print it elsewhere with \addressname
+% \addresses{} 
+
+%% Your subject area, this is not currently used anywhere in the template, print it elsewhere with \subjectname
+\subject{Computer Science} 
+
+%% Keywords for your thesis, print it elsewhere with \keywordnames. This is only used for setting the keywords of the PDF meta data
+\keywords{} 
+
+%% Your university's name and URL, this is used in the title page and abstract, print it elsewhere with \univname
+\university{\href{https://www.kent.ac.uk/}{University of Kent}} 
+
+%% Your department's name and URL, this is used in the title page and abstract, print it elsewhere with \deptname
+\department{\href{https://www.kent.ac.uk/computing}{School of Computing}}
+
+%%% Your research group's name and URL, this is used in the title page, print it elsewhere with \groupname
+\group{\href{https://research.kent.ac.uk/programming-languages-systems/}{Programming Languages and Systems Research Group}} 
+
+%%% Your faculty's name and URL, this is used in the title page and abstract, print it elsewhere with \facname
+\faculty{\href{https://www.kent.ac.uk/about/computing-engineering-and-mathematical-sciences}{CEMS}} 
+
+
+
+\AtBeginDocument{
+\hypersetup{pdftitle=\ttitle} % Set the PDF's title to your title
+\hypersetup{pdfauthor=\authorname} % Set the PDF's author to your name
+\hypersetup{pdfkeywords=\keywordnames} % Set the PDF's keywords to your keywords
+}
+
+
+
+\input{glossary.tex}
+
+
+
+
+%%   _____ _           
+%%  |_   _(_)_ __    _ 
+%%    | | | | '_ \  (_)
+%%    | | | | |_) |  _ 
+%%    |_| |_| .__/  (_)
+%%          |_|        
+%%
+%% Use `\includeonly{path/to/file.tex}' to only compile specific parts of your thesis.
+%% Note: This does still require you to re-compile the *entire* thesis every so often, 
+%%       but will still always save you a lot of time.
+
+%% Note: You must leave all the `include' or `input' used later on that add the other files.
+
+% \includeonly{tex/intro.tex,tex/bg.tex} %% This will only com
+
+
+
+\begin{document}
+
+\frontmatter % Use roman page numbering style (i, ii, iii, iv...) for the pre-content pages
+
+\pagestyle{plain} % Default to the plain heading style until the thesis style is called for the body content
+
+\include{tex/frontmatter/titlepage.tex}
+\include{tex/frontmatter/declaration.tex}
+\include{tex/frontmatter/abstract.tex}
+\include{tex/frontmatter/acknowledgements.tex}
+\include{tex/frontmatter/contents.tex}
+
+%% The below are just what was included by the original class.
+%% These are largely superceeded by using the glossaries-extra package.
+% \include{tex/frontmatter/other.tex}
+
+
+
+%--------------------------
+%	THESIS CONTENT - CHAPTERS
+%--------------------------
+
+\mainmatter % Begin numeric (1,2,3...) page numbering
+
+\pagestyle{thesis} % Return the page headers back to the "thesis" style
+
+% Include the chapters of the thesis as separate files from the Chapters folder
+% Uncomment the lines as you write the chapters
+
+
+%% if using UoKThesis and get error
+%% must comment out all of these, recompile
+%% then comment each back in one by one from bottom up until succeeds
+
+\chapter{Test 1}
+
+\section{Demo of Author Notes}
+See here is some text.
+\anote{Here is a note tagged by `A'.}
+Here is the text after the comment by `A'.
+\anote*{Here is another comment by `A', which is now inline.}
+All of these are tracked and stored in the table of contents (given that \verb|\ifshownotes| is true, i.e., \verb|\shownotestrue| occurs at some point in the preamble).
+\bnote{Here is a note by `B'.}
+These kinds of macros are defined using, e.g., \verb|\NewAuthorNote*[orange]{\anote}{A Note}[teal]|.
+The unstarred version means that the prefix of the note will use the same color as the text.
+There are also todo notes\todo{normal todos like this} and more urgent looking ones\TODO{urgent todos look like this}.
+There is also a marker of things to check later\checkme{check this later} and a marker of things to update\updateme{update me}.
+
+\begin{infobox}
+All of these are defined and configured in the preamble. 
+\end{infobox}
+
+
+
+\begin{exa}[Triangle]
+    Another small change is that example environments now end with a small triangle (similar to how proofs typically end with `$\square$'). This can be helpful to clearly indicate when an example ends.
+\end{exa}
+
+
+\subsection{Demo of Annotations}
+
+In addition to todo-notes, there are also annotation macros such as \anno{this one, which should highlight the text.} 
+These are defined using \verb|\NewHighlight[lightblue]{\anno}[\note[cyan]]| which takes as an argument another kind of note to use as template, and simply then highlights the given parameter. 
+
+% \include{tex/1_introduction.tex}
+% \include{tex/2_background.tex}
+% \include{tex/3_.tex}
+% \include{tex/4_.tex}
+% \include{tex/5_.tex}
+% \include{tex/6_conclusions.tex}
+
+
+
+%--------------------------
+%	THESIS CONTENT - APPENDICES
+%--------------------------
+
+\appendix % Cue to tell LaTeX that the following "chapters" are Appendices
+
+% Include the appendices of the thesis as separate files from the Appendices folder
+% Uncomment the lines as you write the Appendices
+
+
+% \include{tex/appendix/restated.tex}
+
+
+\cleardoublepage
+
+%--------------------------
+%	GLOSSARIES
+%--------------------------
+
+% \glsaddall
+% \printglossaries
+
+\printglossary[type=abbreviations,nonumberlist]
+
+% \printglossary
+
+% \printnoidxglossaries
+
+\cleardoublepage
+
+%--------------------------
+%	BIBLIOGRAPHY
+%--------------------------
+
+\printbibliography[heading=bibintoc]
+
+%--------------------------
+
+
+
+
+\end{document}

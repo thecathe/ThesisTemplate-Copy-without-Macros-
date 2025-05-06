@@ -1,0 +1,77 @@
+
+%% remark-like environment for info boxes
+
+
+%% https://tex.stackexchange.com/questions/534218/how-to-create-an-alert-box-using-tcolorbox
+
+%% https://tex.stackexchange.com/questions/614108/tcolorbox-with-text-near-title-in-the-first-line
+
+% \makeatletter
+\NewTColorBox[%
+auto counter,
+number within=chapter,
+number freestyle={\noexpand\thechapter.\noexpand\arabic{\tcbcounter}},
+crefname={info.}{info-boxes},
+]{infobox}{g !O{}}{%
+enhanced jigsaw,
+colback=white,
+colframe=mdtBlue,
+coltitle=black,
+fonttitle=\bfseries\sffamily,
+detach title,
+% leftrule=16mm,
+% underlay unbroken and first={\node[below,text=white,anchor=east,circle,draw=white,inner sep=-1pt,minimum size=26pt, line width=2pt] at ([xshift=-3mm]interior.base west) {\Huge \itshape\textbf{i}};},
+leftrule=10mm,
+underlay unbroken and first={\node[below,text=white,anchor=east,circle,draw=white,inner sep=-1pt,minimum size=20pt, line width=1.75pt] at ([xshift=-1.5mm]interior.base west) {\huge \itshape\textbf{i}};},
+%%%%%%%%%%%%%%%%%%%%%%%%
+breakable,
+pad at break=1mm,
+%%
+IfValueT={#1}{title={Info.~\thetcbcounter~(#1)}},
+IfValueF={#1}{title={Info.~\thetcbcounter}},
+before upper={\tcbtitle~\hspace{5pt}},
+%%
+% IfValueT={#1}{title={Info.~\thetcbcounter (#1)}},
+% code={\ifdefempty{\tcbtitletext}{}{\tcbset{before upper={\tcbtitle~\hspace{5pt}}}}},
+%% provided params
+#2,
+}
+% \makeatother
+
+
+
+
+% \makeatletter
+\NewTColorBox[%
+auto counter,
+number within=chapter,
+number freestyle={\noexpand\thechapter.\noexpand\arabic{\tcbcounter}},
+crefname={info}{info-boxes},
+]{todobox}{g !O{}}{%
+enhanced jigsaw,
+colback=white,
+colframe=mdtRed,
+coltitle=black,
+fonttitle=\bfseries\sffamily,
+detach title,
+% leftrule=16mm,
+% underlay unbroken and first={\node[below,text=white,anchor=east,circle,draw=white,inner sep=-1pt,minimum size=26pt, line width=2pt] at ([xshift=-3mm]interior.base west) {\Huge \itshape\textbf{i}};},
+leftrule=10mm,
+underlay unbroken and first={\node[below,text=white,anchor=east,circle,draw=white,inner sep=-1pt,minimum size=20pt, line width=1.75pt] at ([xshift=-1.5mm]interior.base west) {\huge \itshape\textbf{!}};},
+%%%%%%%%%%%%%%%%%%%%%%%%
+breakable,
+pad at break=1mm,
+%%
+IfValueT={#1}{title={Todo.~\thetcbcounter~(#1)}},
+IfValueF={#1}{title={Todo.~\thetcbcounter}},
+before upper={\tcbtitle~\hspace{5pt}},
+%%
+% IfValueT={#1}{title={Info.~\thetcbcounter (#1)}},
+% code={\ifdefempty{\tcbtitletext}{}{\tcbset{before upper={\tcbtitle~\hspace{5pt}}}}},
+%% add to toc
+add to list={toc}{subsubsection},
+list entry={\protect\numberline{\thetcbcounter}\color{red}Todo.~(#1)},
+%% provided params
+#2,
+}
+% \makeatother

@@ -1,0 +1,80 @@
+
+%% following 
+%% https://tex.stackexchange.com/a/694556
+
+
+\newenvironment{donothing}{}{}
+
+\NewDocumentCommand{\NewRestateEnvironment}{s m m}{
+  \IfBooleanTF{#1}{%
+    \NewDocumentEnvironment{#2}{s m o +b}{%
+      \IfValueTF{#3}{%
+        \IfBooleanTF{##1}{% starred -- back ref
+          \begin{restatable*}[##3]{#3}{##2}
+            ##4
+          \end{restatable*}%
+        }{% unstarred -- forward ref
+          \begin{restatable}[##3]{#3}{##2}
+            ##4
+          \end{restatable}%
+        }
+      }{
+        \IfBooleanTF{##1}{% starred -- back ref
+          \begin{restatable*}{#3}{##2}
+            ##4
+          \end{restatable*}%
+        }{% unstarred -- forward ref
+          \begin{restatable}{#3}{##2}
+            ##4
+          \end{restatable}%
+        }
+      }
+    }{}
+  }{%
+    \NewDocumentEnvironment{#2}{s m +b}{%
+      \IfBooleanTF{##1}{% starred -- back ref
+        \begin{restatable*}{donothing}{##2}
+        \begin{#3}
+        ##3
+        \end{#3}
+        \end{restatable*}%
+      }{% unstarred -- forward ref
+        \begin{restatable}{donothing}{##2}
+        \begin{#3}
+        ##3
+        \end{#3}
+        \end{restatable}%
+      }
+    }{\unskip\ignorespacesafterend}
+  }%
+}
+
+\NewRestateEnvironment{requation}{equation}
+\NewRestateEnvironment{rtypecheck}{typecheck}
+\NewRestateEnvironment{rstype}{stype}
+
+\NewRestateEnvironment{rproof}{proof}
+
+
+
+\NewRestateEnvironment*{rdefi}{defi}
+
+
+%% for figures
+
+\newcommand{\repeatcaption}[2]{%
+  \renewcommand{\thefigure}{\ref{#1}}%
+  \captionsetup{list=no}%
+  % \caption{(Restated) #2 (repeated from page \pageref{#1})}%
+  \caption{(Restated) #2}%
+  \addtocounter{figure}{-1}% So that next figure after the repeat gets the right number.
+}
+
+% \newcommand{\repeatsubcaption}[2]{%
+%   \renewcommand{\thesubfig}{\ref{#1}}%
+%   \captionsetup{list=no}%
+%   \caption{(Restated) #2}%
+%   \addtocounter{subfig}{-1}% So that next figure after the repeat gets the right number.
+% }
+
+% \NewRestateEnvironment{rfigure}{figure}

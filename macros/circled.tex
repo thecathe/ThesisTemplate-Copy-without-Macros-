@@ -1,0 +1,25 @@
+
+% #1 : {} : (mandatory) character to be circled
+\newcommand*\circled[1]{%
+    \tikz[baseline=(char.base)]{%
+        \node[shape=circle,draw,inner sep=0.7pt] (char) {%
+            \WrapMathMode{#1}%
+        };%
+    }%
+}
+
+
+
+% \definecolor{circleEdge}{HTML}{D79B00}
+% \definecolor{circleFill}{HTML}{FFE6CC}
+
+
+% \NewDocumentCommand{\Circled}{m}{%
+% {\tikz{%
+% \node[fill=circleFill, text=black, circle, draw=circleEdge, yshift=-25pt, inner sep=-1pt, minimum size=8pt] {{\fontfamily{phv}\textbf{#1}}};%
+% }}%
+% }
+
+% \NewDocumentCommand{\CircledA}{}{\Circled{a}}
+% \NewDocumentCommand{\CircledB}{}{\Circled{b}}
+% \NewDocumentCommand{\CircledC}{}{\Circled{c}}
